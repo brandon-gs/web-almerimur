@@ -1,0 +1,21 @@
+.alert {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+  width: 100%;
+  max-width: 2208px;
+  bottom: 0;
+  padding: 16px 24px;
+  z-index: 10000;
+}
+
+.alert_icon {
+  cursor: pointer;
+}
+
+.alert-danger {
+  background-color: #ff3838;
+}
