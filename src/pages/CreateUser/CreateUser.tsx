@@ -1,27 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./CreateUser.css";
 import edit from "../../assets/svg/edit.svg";
 import { Input, SelectInput, Sidebar } from "../../components";
 import { CreateUserValues } from "src/@types/user";
 import { createUser } from "src/api/user.api";
 import Alert from "src/components/Alert";
+import { StateAlert } from "src/components/Alert/Alert";
+import { useHistory } from "react-router-dom";
 
 const defaultValues: CreateUserValues = {
   role: "Conductor",
   name: "",
   job: "",
-  image: "",
+  image: "/img/default_user.png",
   email: "",
   password: "",
   confirmPassword: "",
   contract: "",
   hourly: "",
+  MAX_FILE_SIZE: "100000000",
 };
 
 function CreateUser() {
   const [values, setValues] = useState<CreateUserValues>(defaultValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [serverError, setServerError] = useState<string>("");
+  const [serverError, setServerError] = useState<StateAlert>({
+    message: "",
+    type: "success",
+    show: false,
+  });
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const updateErrors = (errors: Record<string, string>) => setErrors(errors);
 
@@ -36,9 +44,13 @@ function CreateUser() {
     setValues({ ...values, [name]: event.target.value });
   };
 
-  const handleUploadImage = () => {
-    // TODO: upload image to the server and set his url in values state
-    console.log("Upload image");
+  const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setValues({
+        ...values,
+        image: URL.createObjectURL(event.target.files[0]),
+      });
+    }
   };
 
   const getErrors = () => {
@@ -62,26 +74,51 @@ function CreateUser() {
     const { hasErrors, errors } = getErrors();
     updateErrors(errors);
     // Do api call to create user
-    if (!hasErrors) {
+    if (!hasErrors && fileInputRef.current?.files) {
       try {
-        const response = await createUser(values);
-        console.log(response)
+        const inputFile = fileInputRef.current.files[0];
+        const response = await createUser(values, inputFile);
         if (response.error && response.message) {
-          setServerError(response.message.toString());
+          setServerError({
+            message: response.message.toString(),
+            type: "danger",
+            show: true,
+          });
           return;
         }
         setValues(defaultValues);
         setErrors({});
+        setServerError({
+          message: "Usuario creado",
+          type: "success",
+          show: true,
+        });
       } catch (error) {
-        setServerError("Error al crear el usuario, intente más tarde.");
+        setServerError({
+          message: "Error al crear el usuario, intente más tarde.",
+          type: "danger",
+          show: true,
+        });
       }
+    } else if (values.image === defaultValues.image) {
+      window.scrollTo({ top: 0 });
+      setServerError({
+        message: "Se debe seleccionar una imagen",
+        type: "danger",
+        show: true,
+      });
     } else {
       window.scrollTo({ top: 0 });
-      setServerError("Todos los campos son requeridos.");
+      setServerError({
+        message: "Todos los campos son requeridos.",
+        type: "danger",
+        show: true,
+      });
     }
   };
 
-  const onCloseAlert = () => setServerError("");
+  const onCloseAlert = () =>
+    setServerError({ message: "", type: "danger", show: false });
 
   /** Close alert after 5s */
   useEffect(() => {
@@ -95,11 +132,20 @@ function CreateUser() {
     };
   }, [serverError]);
 
+  const history = useHistory();
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    history.push("/login");
+    return null;
+  }
+
   return (
     <div className="page">
       <Alert
-        show={Boolean(serverError)}
-        message={serverError}
+        show={serverError.show}
+        message={serverError.message}
+        type={serverError.type}
         onClose={onCloseAlert}
       />
       <Sidebar />
@@ -108,15 +154,32 @@ function CreateUser() {
           <article className="panel_column">
             <h1 className="panel_title mb-4">Dar de alta</h1>
             <p className="panel_text mb-5">Usuario</p>
+            <Input
+              type="hidden"
+              placeholder="Max file size"
+              name="MAX_FILE_SIZE"
+              value={values.MAX_FILE_SIZE}
+              onChange={handleInputChange("MAX_FILE_SIZE")}
+            />
             <div className="panel_edit_image mb-4">
+              <div className="image-upload">
+                <label htmlFor="image">
+                  <img
+                    src={edit}
+                    alt="Boton para editar"
+                    className="panel_image_button"
+                  />
+                </label>
+                <input
+                  id="image"
+                  name="image"
+                  type="file"
+                  onChange={handleUploadImage}
+                  ref={fileInputRef}
+                />
+              </div>
               <img
-                src={edit}
-                alt="Boton para editar"
-                className="panel_image_button"
-                onClick={handleUploadImage}
-              />
-              <img
-                src="/img/default_user.png"
+                src={values.image}
                 alt="usuario a dar de alta"
                 className="panel_image"
               />
@@ -128,6 +191,7 @@ function CreateUser() {
               items={["Conductor", "Mecánico"]}
               onChange={handleSelectChange("role")}
             />
+
             <Input
               type="text"
               name="name"

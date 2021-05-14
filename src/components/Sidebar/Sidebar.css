@@ -32,6 +32,14 @@
   text-decoration: none;
 }
 
+.sidebar_text--active {
+  font-size: 16px;
+  color: var(--primary);
+  font-weight: 500;
+  margin-bottom: 16px;
+  text-decoration: none;
+}
+
 .sidebar_text--section {
   font-size: 14px;
   color: var(--gray);

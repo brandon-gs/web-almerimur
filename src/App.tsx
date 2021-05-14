@@ -3,20 +3,18 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { CreateUser, Home, Login } from "./pages";
 
 function App() {
-  const token = localStorage.getItem("token");
-
   const routes = [
     {
       path: "/",
-      component: token ? Home : Login,
+      component: Home,
+    },
+    {
+      path: "/login",
+      component: Login,
     },
     {
       path: "/create/user",
       component: CreateUser,
-    },
-    {
-      path: "/dashboard",
-      component: Home,
     },
   ];
 

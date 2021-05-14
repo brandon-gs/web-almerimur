@@ -13,24 +13,41 @@ export const loginAdmin = async (admin: LoginValues) => {
       error: false,
     };
   } catch (e) {
-    const message = e.response.data.message
+    const message = e.response
       ? e.response.data.message
       : "Error al iniciar sesión";
     return { error: true, message: message.replace("Clave", "Contraseña") };
   }
 };
 
-export const createUser = async (user: CreateUserValues) => {
+export const createUser = async (user: CreateUserValues, file: any) => {
   try {
-    const params = new URLSearchParams();
-    for (const key in user) {
-      params.append(key, user[key as keyof CreateUserValues]);
-    }
+    const {
+      name,
+      password,
+      contract,
+      hourly,
+      job,
+      email,
+      role,
+      MAX_FILE_SIZE,
+    } = user;
+    let formData = new FormData();
+    formData.append("MAX_FILE_SIZE", MAX_FILE_SIZE);
+    formData.append("name", name);
+    formData.append("password", password);
+    formData.append("contract", contract);
+    formData.append("hourly", hourly);
+    formData.append("job", job);
+    formData.append("email", email);
+    formData.append("role", role);
+    formData.append("image", file);
     const { data } = await axios({
       method: "post",
       url: "/create_user.php",
-      data: params,
+      data: formData,
       headers: {
+        "Content-Type": "multipart/form-data",
         Authorization: localStorage.getItem("token"),
       },
     });

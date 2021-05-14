@@ -1,9 +1,17 @@
 import { VscChromeClose } from "react-icons/vsc";
 import "./Alert.css";
 
+export type TypeAlert = "danger" | "info" | "success";
+
+export interface StateAlert {
+  show: boolean;
+  message: string;
+  type: TypeAlert;
+}
+
 interface AlertProps {
   message?: string;
-  type?: "danger" | "info";
+  type?: "danger" | "info" | "success";
   show?: boolean;
   onClose: () => void;
 }

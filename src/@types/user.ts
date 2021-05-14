@@ -8,4 +8,5 @@ export interface CreateUserValues {
   confirmPassword: string;
   contract: string;
   hourly: string;
+  MAX_FILE_SIZE: string;
 }

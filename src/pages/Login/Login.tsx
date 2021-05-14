@@ -35,8 +35,14 @@ function Login() {
     }
     const { data } = response;
     if (data) localStorage.setItem("token", data.token);
-    history.push("/dashboard");
+    history.push("/create/user");
   };
+
+  const token = localStorage.getItem("token");
+  if (token) {
+    history.push("/");
+    return null;
+  }
 
   return (
     <div className="login_container">
