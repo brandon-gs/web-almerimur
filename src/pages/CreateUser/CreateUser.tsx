@@ -37,12 +37,11 @@ function CreateUser() {
     setValues({ ...values, [name]: value });
   };
 
-  const handleInputChange = (name: string) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setErrors({ ...errors, [name]: "" });
-    setValues({ ...values, [name]: event.target.value });
-  };
+  const handleInputChange =
+    (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      setErrors({ ...errors, [name]: "" });
+      setValues({ ...values, [name]: event.target.value });
+    };
 
   const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -261,7 +260,7 @@ function CreateUser() {
             />
           </article>
         </section>
-        <div className="button_container">
+        <div className="button_container" style={{ width: "100%" }}>
           <button type="button" onClick={handleSubmit} className="button">
             Guardar
           </button>

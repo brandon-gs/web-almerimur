@@ -48,7 +48,7 @@ export const createUser = async (user: CreateUserValues, file: any) => {
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: localStorage.getItem("token"),
+        authorization: localStorage.getItem("token"),
       },
     });
     return { error: false, data };

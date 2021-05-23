@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { loginAdmin } from "src/api/user.api";
-import { Input } from "src/components";
-import Alert from "src/components/Alert";
+import { Input, Loader, Alert } from "src/components";
 import "./Login.css";
 
 export interface LoginValues {
@@ -18,7 +17,11 @@ function Login() {
 
   const history = useHistory();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: "" });
+
+  const enableLoader = () => setIsLoading(true);
+  const disableLoader = () => setIsLoading(false);
 
   const handleCloseAlert = () => setAlert({ ...alert, show: false });
 
@@ -28,13 +31,16 @@ function Login() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    enableLoader();
     const response = await loginAdmin(values);
     if (response.error && response.message) {
       setAlert({ show: true, message: response.message });
+      disableLoader();
       return;
     }
     const { data } = response;
     if (data) localStorage.setItem("token", data.token);
+    disableLoader();
     history.push("/create/user");
   };
 
@@ -46,6 +52,7 @@ function Login() {
 
   return (
     <div className="login_container">
+      {isLoading && <Loader />}
       <Alert
         show={alert.show}
         message={alert.message}
