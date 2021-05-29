@@ -1,0 +1,44 @@
+.filters_header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24px 0;
+  width: 100%;
+  /* overflow-x: auto; */
+  padding: 0 16px;
+}
+
+.border {
+  border-bottom: 0.3px solid #00000029;
+}
+
+.input_select,
+.input_search {
+  width: 26%;
+  min-width: 180px;
+  max-width: 310px;
+  margin: 0 8px;
+}
+
+.input_search {
+  margin-bottom: 8px;
+}
+
+.button_table {
+  width: 150px;
+  height: 40px;
+  max-width: 40px;
+  max-width: 150px;
+  background-color: var(--primary);
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 18px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.table {
+  height: 760px;
+}

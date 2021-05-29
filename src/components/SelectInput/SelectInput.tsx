@@ -7,6 +7,7 @@ interface SelectInputProps {
   items?: Array<string>;
   className?: string;
   onChange: (value: string) => void;
+  disabled?: boolean;
 }
 
 function SelectInput({
@@ -15,6 +16,7 @@ function SelectInput({
   items = [],
   className,
   onChange,
+  disabled = false,
 }: SelectInputProps) {
   const [showItems, setShowItems] = useState(false);
 
@@ -32,22 +34,29 @@ function SelectInput({
 
   return (
     <div className={"select " + className}>
-      <div className="select_input" onClick={handleClickSelect}>
+      <div
+        className="select_input"
+        onClick={!disabled ? handleClickSelect : () => {}}
+        style={{ cursor: !disabled ? "pointer" : "default" }}
+      >
         {!showValue && <p className="select_placeholder">{placeholder}</p>}
         {showValue && <p>{value}</p>}
-        <div className={"select_arrow " + upArrow} />
+        {!disabled && <div className={"select_arrow " + upArrow} />}
       </div>
       {showItems && (
         <div className="select_items">
-          {items.map((item, idx) => (
-            <div
-              key={`select-${item}-${idx}`}
-              className="select_item"
-              onClick={() => handleClickItem(item)}
-            >
-              <p>{item}</p>
-            </div>
-          ))}
+          {items.map((item, idx) => {
+            const active = item === value ? "selected_item" : "";
+            return (
+              <div
+                key={`select-${item}-${idx}`}
+                className={`select_item ${active}`}
+                onClick={() => handleClickItem(item)}
+              >
+                <p>{item}</p>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

@@ -99,13 +99,6 @@ function CreateUser() {
           show: true,
         });
       }
-    } else if (values.image === defaultValues.image) {
-      window.scrollTo({ top: 0 });
-      setServerError({
-        message: "Se debe seleccionar una imagen",
-        type: "danger",
-        show: true,
-      });
     } else {
       window.scrollTo({ top: 0 });
       setServerError({

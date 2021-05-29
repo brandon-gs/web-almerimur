@@ -1,0 +1,9 @@
+.tablerow {
+  display: flex;
+  align-items: center;
+}
+
+.tablerow_header,
+.tablerow_text {
+  font-size: 16px;
+}

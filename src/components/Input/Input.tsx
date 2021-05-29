@@ -6,12 +6,18 @@ export interface InputProps {
   name: string;
   placeholder: string;
   className?: string;
+  containerClassName?: string;
   error?: string;
   value?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function Input({ error = "", className, ...props }: InputProps) {
+function Input({
+  error = "",
+  className,
+  containerClassName = "",
+  ...props
+}: InputProps) {
   // const [currentValue, setCurrentValue] = useState<string>(value);
   const [errorProp, setErrorProp] = useState<string>(error);
   // const errorClass = Boolean(errorProp) ? "input-error" : "";
@@ -25,7 +31,7 @@ function Input({ error = "", className, ...props }: InputProps) {
   }, [error]);
 
   return (
-    <div className="input_container">
+    <div className={`input_container ${containerClassName}`}>
       <input className={`input ${className}`} {...props} />
       {errorProp && <p className="input_error">{errorProp}</p>}
     </div>

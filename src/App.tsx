@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
 import {
   CreateClient,
   CreateMachine,
@@ -7,8 +6,13 @@ import {
   CreateUser,
   Home,
   Login,
+  Filters,
+  FiltersPeriod,
+  FiltersClient,
+  FiltersEmployee,
+  FiltersMachine,
+  CreateVehicle,
 } from "./pages";
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 function App() {
@@ -36,6 +40,30 @@ function App() {
     {
       path: "/create/machine",
       component: CreateMachine,
+    },
+    {
+      path: "/create/vehicle",
+      component: CreateVehicle,
+    },
+    {
+      path: "/filters",
+      component: Filters,
+    },
+    {
+      path: "/filters/period",
+      component: FiltersPeriod,
+    },
+    {
+      path: "/filters/client",
+      component: FiltersClient,
+    },
+    {
+      path: "/filters/employee",
+      component: FiltersEmployee,
+    },
+    {
+      path: "/filters/machine",
+      component: FiltersMachine,
     },
   ];
 

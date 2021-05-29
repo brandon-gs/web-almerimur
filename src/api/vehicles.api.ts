@@ -2,14 +2,14 @@ import axios from "./axios";
 import { CreateMachineValues } from "src/@types/machine";
 import { Item } from "src/components/List/ListItem/ListItem";
 
-export const createMachine = async (machine: CreateMachineValues) => {
+export const createVehicle = async (machine: CreateMachineValues) => {
   try {
     const { name } = machine;
     let formData = new FormData();
     formData.append("name", name);
     const { data } = await axios({
       method: "POST",
-      url: "/create_machine.php",
+      url: "/create_vehicle.php",
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -18,15 +18,15 @@ export const createMachine = async (machine: CreateMachineValues) => {
     });
     return { error: false, data };
   } catch (e) {
-    return { error: true, message: "Error al crear una maquina" };
+    return { error: true, message: "Error al crear un vehículo" };
   }
 };
 
-export const getMachines = async () => {
+export const getVehicles = async () => {
   try {
     const { data } = await axios({
       method: "GET",
-      url: "/get_machines.php",
+      url: "/get_vehicles.php",
       headers: {
         authorization: localStorage.getItem("token"),
       },
@@ -35,50 +35,50 @@ export const getMachines = async () => {
   } catch (error) {
     return {
       error: true,
-      message: "Error al obtener la lista de maquinas, intentelo de nuevo.",
+      message: "Error al obtener la lista de vehículos, intentelo de nuevo.",
     };
   }
 };
 
-export const putMachine = async (machine: Item) => {
+export const putVehicle = async (vehicle: Item) => {
   try {
     let formData = new FormData();
-    formData.append("id", machine.id);
-    formData.append("name", machine.name);
+    formData.append("id", vehicle.id);
+    formData.append("name", vehicle.name);
     await axios({
       method: "POST",
-      url: "/update_machine.php",
+      url: "/update_vehicle.php",
       data: formData,
       headers: {
         authorization: localStorage.getItem("token"),
       },
     });
-    return { error: false, message: "Maquina actualizada" };
+    return { error: false, message: "Vehículo actualizado" };
   } catch (error) {
     return {
       error: true,
-      message: "Error al actualizar la maquina, intentelo más tarde.",
+      message: "Error al actualizar el vehículo, intentelo más tarde.",
     };
   }
 };
 
-export const deleteMachine = async (id: string) => {
+export const deleteVehicle = async (id: string) => {
   try {
     const formData = new FormData();
     formData.append("id", id);
     await axios({
       method: "POST",
-      url: "/delete_machine.php",
+      url: "/delete_vehicle.php",
       data: formData,
       headers: {
         authorization: localStorage.getItem("token"),
       },
     });
-    return { error: false, message: "Maquina eliminada" };
+    return { error: false, message: "Vehículo eliminado" };
   } catch (error) {
     return {
       error: true,
-      message: "Error al eliminar la maquina, intentelo más tarde.",
+      message: "Error al eliminar el vehículo, intentelo más tarde.",
     };
   }
 };

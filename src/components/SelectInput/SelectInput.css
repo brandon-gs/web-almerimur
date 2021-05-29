@@ -1,12 +1,13 @@
 .select {
   position: relative;
+  width: 302px;
 }
 
 .select_input {
   position: relative;
   display: flex;
   align-items: center;
-  width: 302px;
+  width: 100%;
   height: 40px;
   border: 1px solid var(--gray);
   font-weight: 500;
@@ -47,6 +48,9 @@
   background-color: #fff;
   animation: showItems 0.5s;
   animation-iteration-count: 1;
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
   z-index: 100;
 }
 
@@ -55,8 +59,8 @@
   color: var(--primary);
   font-size: 16px;
   font-weight: 500;
-  width: 300px;
-  height: 40px;
+  width: 100%;
+  min-height: 40px;
   cursor: pointer;
   user-select: none;
   padding: 8px 8px;
@@ -65,6 +69,11 @@
 
 .select_item:hover {
   background-color: var(--primary-low);
+}
+
+.selected_item {
+  background-color: var(--primary);
+  color: white;
 }
 
 @keyframes showItems {

@@ -37,15 +37,20 @@ function CreateMachine() {
   const getApiMachines = useCallback(async () => {
     enableLoading();
     const { data } = await getMachines();
-    if (data && data.machines) {
-      let _machines = changeNameKeyFromArray(
-        data.machines,
-        "machine_name",
-        "name"
-      );
-      _machines = changeNameKeyFromArray(data.machines, "machine_id", "id");
-      setMachines(_machines.reverse());
+    if (data) {
+      if (data.machines) {
+        let _machines = changeNameKeyFromArray(
+          data.machines,
+          "machine_name",
+          "name"
+        );
+        _machines = changeNameKeyFromArray(data.machines, "machine_id", "id");
+        setMachines(_machines.reverse());
+      } else {
+        setMachines([]);
+      }
     }
+
     disableLoading();
   }, []);
 

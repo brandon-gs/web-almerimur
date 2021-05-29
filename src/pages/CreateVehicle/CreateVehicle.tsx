@@ -4,23 +4,22 @@ import { CreateClientValues } from "src/@types/client";
 import Alert from "src/components/Alert";
 import { StateAlert } from "src/components/Alert/Alert";
 import { useHistory } from "react-router-dom";
-import "./CreateProject.css";
+import "./CreateVehicle.css";
 import { Item } from "src/components/List/ListItem/ListItem";
 import {
-  createProject,
-  deleteProject,
-  getProjects,
-  putProject,
-} from "src/api/project.api";
-import { changeNameKeyFromArray } from "src/helpers/objects";
+  createVehicle,
+  getVehicles,
+  putVehicle,
+  deleteVehicle,
+} from "src/api/vehicles.api";
 
 const defaultValues = {
   name: "",
 };
 
-function CreateProject() {
+function CreateVehicle() {
   const [isLoading, setIsLoading] = useState(false);
-  const [projects, setProjects] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
   const [values, setValues] = useState<CreateClientValues>(defaultValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<StateAlert>({
@@ -34,33 +33,27 @@ function CreateProject() {
   const updateErrors = (errors: Record<string, string>) => setErrors(errors);
 
   // Get clients saved on bd
-  const getApiProjects = useCallback(async () => {
+  const getApiVehicles = useCallback(async () => {
     enableLoading();
-    const { data } = await getProjects();
+    const { data } = await getVehicles();
     if (data) {
-      if (data.projects) {
-        let _projects = changeNameKeyFromArray(
-          data.projects,
-          "project_name",
-          "name"
-        );
-        _projects = changeNameKeyFromArray(data.projects, "project_id", "id");
-        setProjects(_projects.reverse());
+      if (data.vehicles) {
+        setVehicles(data.vehicles);
       } else {
-        setProjects([]);
+        setVehicles([]);
       }
     }
     disableLoading();
   }, []);
 
   useEffect(() => {
-    getApiProjects();
-  }, [getApiProjects]);
+    getApiVehicles();
+  }, [getApiVehicles]);
 
-  // Update client
-  const updateProject = async (project: Item) => {
+  // Update vehicle
+  const updateVehicle = async (vehicle: Item) => {
     enableLoading();
-    const { error, message } = await putProject(project);
+    const { error, message } = await putVehicle(vehicle);
     if (error) {
       setServerError({
         message,
@@ -68,7 +61,7 @@ function CreateProject() {
         show: true,
       });
     } else {
-      await getApiProjects();
+      await getApiVehicles();
       setServerError({
         message,
         type: "success",
@@ -79,9 +72,9 @@ function CreateProject() {
   };
 
   // Delete client
-  const deleteProjectById = async (id: string) => {
+  const deleteVehicleById = async (id: string) => {
     enableLoading();
-    const { error, message } = await deleteProject(id);
+    const { error, message } = await deleteVehicle(id);
     if (error) {
       setServerError({
         message,
@@ -89,7 +82,7 @@ function CreateProject() {
         show: true,
       });
     } else {
-      await getApiProjects();
+      await getApiVehicles();
       setServerError({
         message,
         type: "success",
@@ -124,7 +117,7 @@ function CreateProject() {
     // Do api call to create user
     if (!hasErrors) {
       try {
-        const response = await createProject(values);
+        const response = await createVehicle(values);
         if (response.error && response.message) {
           setServerError({
             message: response.message.toString(),
@@ -136,14 +129,14 @@ function CreateProject() {
         setValues(defaultValues);
         setErrors({});
         setServerError({
-          message: "Cliente dado de alta.",
+          message: "Vehículo dado de alta.",
           type: "success",
           show: true,
         });
-        await getApiProjects();
+        await getApiVehicles();
       } catch (error) {
         setServerError({
-          message: "Error al dar de alta al cliente, intente más tarde.",
+          message: "Error al dar de alta el vehículo, intente más tarde.",
           type: "danger",
           show: true,
         });
@@ -195,11 +188,11 @@ function CreateProject() {
         <section className="panel_columns">
           <article className="panel_column">
             <h1 className="panel_title mb-4">Dar de alta</h1>
-            <p className="panel_text mb-5">Proyecto</p>
+            <p className="panel_text mb-5">Vehículo</p>
             <Input
               type="text"
               name="name"
-              placeholder="Nombre del proyecto"
+              placeholder="Nombre del vehículo"
               className="mb-4"
               value={values.name}
               error={errors.name}
@@ -213,12 +206,12 @@ function CreateProject() {
               Guardar
             </button>
           </article>
-          {projects && (
+          {vehicles && (
             <List
-              title="Lista de proyectos"
-              items={projects}
-              onUpdate={updateProject}
-              onDelete={deleteProjectById}
+              title="Lista de vehículos"
+              items={vehicles}
+              onUpdate={updateVehicle}
+              onDelete={deleteVehicleById}
             />
           )}
         </section>
@@ -227,4 +220,4 @@ function CreateProject() {
   );
 }
 
-export default CreateProject;
+export default CreateVehicle;

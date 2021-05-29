@@ -81,14 +81,18 @@ function CreateClient() {
   const getApiClients = useCallback(async () => {
     enableLoading();
     const { data } = await getClients();
-    if (data && data.clients) {
-      let _clients = changeNameKeyFromArray(
-        data.clients,
-        "client_name",
-        "name"
-      );
-      _clients = changeNameKeyFromArray(data.clients, "client_id", "id");
-      setClients(_clients.reverse());
+    if (data) {
+      if (data.clients) {
+        let _clients = changeNameKeyFromArray(
+          data.clients,
+          "client_name",
+          "name"
+        );
+        _clients = changeNameKeyFromArray(data.clients, "client_id", "id");
+        setClients(_clients.reverse());
+      } else {
+        setClients([]);
+      }
     }
     disableLoading();
   }, []);

@@ -49,12 +49,39 @@ function Sidebar() {
             Maquinaria disponible
           </p>
         </Link>
+        <Link to="/create/vehicle" className="sidebar_link">
+          <p className={`sidebar_text--${getTextClass("/create/vehicle")}`}>
+            Vehículos disponibles
+          </p>
+        </Link>
         <p className="sidebar_text--section">Ver datos</p>
-        <p className="sidebar_text--default">Ver todo</p>
-        <p className="sidebar_text--default">Por periodo</p>
-        <p className="sidebar_text--default">Por cliente</p>
-        <p className="sidebar_text--default">Por empleado</p>
-        <p className="sidebar_text--default mb-6">Por maquinaria</p>
+        <Link to="/filters" className="sidebar_link">
+          <p className={`sidebar_text--${getTextClass("/filters")}`}>
+            Ver todo
+          </p>
+        </Link>
+        <Link to="/filters/period" className="sidebar_link">
+          <p className={`sidebar_text--${getTextClass("/filters/period")}`}>
+            Por periodo
+          </p>
+        </Link>
+        <Link to="/filters/client" className="sidebar_link">
+          <p className={`sidebar_text--${getTextClass("/filters/client")}`}>
+            Por cliente
+          </p>
+        </Link>
+        <Link to="/filters/employee" className="sidebar_link">
+          <p className={`sidebar_text--${getTextClass("/filters/employee")}`}>
+            Por empleado
+          </p>
+        </Link>
+        <Link to="/filters/machine" className="sidebar_link">
+          <p
+            className={`mb-6 sidebar_text--${getTextClass("/filters/machine")}`}
+          >
+            Por maquinaria
+          </p>
+        </Link>
         <div className="sidebar_exit mb-4" onClick={() => logout()}>
           <img src={ExitIcon} alt="Icon de cerrar sesion" />
           <p className="sidebar_exit--text">Salir</p>

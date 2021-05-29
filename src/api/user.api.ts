@@ -42,8 +42,8 @@ export const createUser = async (user: CreateUserValues, file: any) => {
     formData.append("email", email);
     formData.append("role", role);
     formData.append("image", file);
-    const { data } = await axios({
-      method: "post",
+    const response = await axios({
+      method: "POST",
       url: "/create_user.php",
       data: formData,
       headers: {
@@ -51,7 +51,7 @@ export const createUser = async (user: CreateUserValues, file: any) => {
         authorization: localStorage.getItem("token"),
       },
     });
-    return { error: false, data };
+    return { error: false, data: response.data };
   } catch (e) {
     return { error: true, message: "Error al crear usuario" };
   }

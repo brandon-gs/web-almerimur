@@ -40,7 +40,6 @@ function Login() {
     }
     const { data } = response;
     if (data) localStorage.setItem("token", data.token);
-    disableLoader();
     history.push("/create/user");
   };
 
