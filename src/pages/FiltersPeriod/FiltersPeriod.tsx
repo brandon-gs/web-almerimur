@@ -14,6 +14,8 @@ import { FiltersTypes, saveValueOnSessionStorage } from "src/helpers/filters";
 import useWorkDates from "src/hooks/useWorkDates";
 import TableRow from "src/components/TableRow";
 import usePrintDiv from "src/hooks/usePrintDiv";
+import useRechanges from "src/hooks/useRechanges";
+import { OrderCreation } from "src/@types/order";
 
 const FILTERS = [FiltersTypes.periods];
 
@@ -35,7 +37,14 @@ export default function FiltersPeriod() {
   // Hooks
   const { tableRef, print } = usePrintDiv();
   const { arrayDates } = useWorkDates(changeLoading);
-  const { works, filterWorksByDate } = useWorks(changeLoading);
+  const {
+    works,
+    filterWorksByDate,
+    searchWorksByKeyword,
+    sortByDateOption,
+    sortByCreated,
+  } = useWorks(changeLoading);
+  const { rechanges } = useRechanges(changeLoading);
   // Const
   const PERIODS = [ALL_PERIODS, ...arrayDates];
 
@@ -54,10 +63,20 @@ export default function FiltersPeriod() {
     saveValueOnSessionStorage("date", value);
     setDate(value);
   };
-  const onChangeOrder = (value: string) => {
+  const onChangeOrder = async (value: string) => {
     saveValueOnSessionStorage("order", value);
+    if (value === OrderCreation.firstCreatedAt) {
+      await sortByCreated("asc");
+    } else if (value === OrderCreation.lastCreatedAt) {
+      await sortByCreated("des");
+    } else if (value === OrderCreation.firstPeriod) {
+      await sortByDateOption("asc");
+    } else if (value === OrderCreation.lastPeriod) {
+      await sortByDateOption("des");
+    }
     setOrder(value);
   };
+
   const onChangeFilter = (value: string) => {
     saveValueOnSessionStorage("filter", value);
     setFilter(value);
@@ -90,6 +109,12 @@ export default function FiltersPeriod() {
             <SelectInput
               onChange={onChangeOrder}
               value={order}
+              items={[
+                OrderCreation.firstPeriod,
+                OrderCreation.lastPeriod,
+                OrderCreation.lastCreatedAt,
+                OrderCreation.firstCreatedAt,
+              ]}
               placeholder="Ordenar"
               className="input_select"
             />
@@ -104,7 +129,7 @@ export default function FiltersPeriod() {
             <Input
               type="text"
               name="search"
-              onChange={() => null}
+              onChange={(e) => searchWorksByKeyword(e.target.value)}
               placeholder="Buscar keyword"
               containerClassName="input_search"
             />
@@ -130,14 +155,18 @@ export default function FiltersPeriod() {
           </div>
           <div className="border"></div>
           {works.map((work, index) => (
-            <TableRowWork key={`work-${index}`} {...work} />
+            <TableRowWork
+              key={`work-${index}`}
+              {...work}
+              rechanges={rechanges}
+            />
           ))}
         </div>
         <div className="button_container" style={{ width: "100%" }}>
           <button type="button" onClick={print} className="button mr-7">
             Imprimir
           </button>
-          <DownloadExcel works={works} />
+          <DownloadExcel works={works} rechanges={rechanges} />
         </div>
       </main>
     </div>

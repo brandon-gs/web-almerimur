@@ -1,10 +1,12 @@
 import ReactExport, { ExcelSheetData } from "react-data-export";
 import { TableWork } from "src/@types/works";
+import { getRechangesByIdWork } from "src/api/rechange.api";
 import {
   calculatePrice,
   formatArrayDate,
   getMonthAndYear,
 } from "src/helpers/filters";
+import { ApiRechange } from "src/hooks/useRechanges";
 const ExcelFile = ReactExport.ExcelFile;
 const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
@@ -37,9 +39,10 @@ const multiDataSet = (data: any[]): ExcelSheetData[] => [
 
 interface Props {
   works: TableWork[];
+  rechanges: ApiRechange[];
 }
 
-export default function DownloadExcel({ works }: Props) {
+export default function DownloadExcel({ works, rechanges }: Props) {
   const convertWorksToDataset = () => {
     const excellKeys = [
       "role",
@@ -53,7 +56,7 @@ export default function DownloadExcel({ works }: Props) {
       .filter((work) => work.checked)
       .map((work) => {
         const workExcell: any = [];
-        Object.keys(work).forEach((key: string) => {
+        Object.keys(work).forEach(async (key: string) => {
           if (excellKeys.includes(key)) {
             const indexKey = excellKeys.indexOf(key);
             if (key === "date" && work[key]) {
@@ -64,9 +67,13 @@ export default function DownloadExcel({ works }: Props) {
               workExcell[indexKey] = work[key as keyof TableWork];
             }
           } else if (key === "hourly") {
+            const { data } = await getRechangesByIdWork(work.id);
+            const currentRechanges = data.rechanges ? data.rechanges : [];
             workExcell[excellKeys.length] = calculatePrice(
               work.hours,
-              work.hourly
+              work.hourly,
+              currentRechanges,
+              rechanges
             );
           }
         });

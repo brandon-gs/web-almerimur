@@ -1,10 +1,13 @@
+import { useEffect, useState } from "react";
 import { TableWork } from "src/@types/works";
+import { getRechangesByIdWork } from "src/api/rechange.api";
 import {
   calculatePrice,
   formatArrayDate,
   getMonthAndYear,
   showNA,
 } from "src/helpers/filters";
+import { ApiRechange } from "src/hooks/useRechanges";
 import TableRow from "../TableRow/TableRow";
 
 export default function TableRowWork({
@@ -17,7 +20,29 @@ export default function TableRowWork({
   hours,
   hourly,
   checked,
-}: TableWork) {
+  id,
+  rechanges: apiRechanges,
+}: TableWork & { rechanges: ApiRechange[] }) {
+  const [mounted, setMounted] = useState(false);
+  const [rechanges, setRechanges] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      if (role === "Mecánico") {
+        const { data } = await getRechangesByIdWork(id);
+        if (data.rechanges) {
+          setRechanges(data.rechanges);
+          setMounted(true);
+        } else {
+          setMounted(true);
+        }
+      } else {
+        setMounted(true);
+      }
+    };
+    getData();
+  }, [id, role]);
+
   return (
     <div
       style={{
@@ -44,8 +69,10 @@ export default function TableRowWork({
       <TableRow>{showNA(machine)}</TableRow>
       <TableRow>{showNA(project)}</TableRow>
       <TableRow>{showNA(client)}</TableRow>
-      <TableRow width={130}>{calculatePrice(hours, hourly)}</TableRow>
-      <button className="button_table">Abrir</button>
+      <TableRow width={130}>
+        {mounted && calculatePrice(hours, hourly, rechanges, apiRechanges)}
+      </TableRow>
+      {false && <button className="button_table">Abrir</button>}
     </div>
   );
 }

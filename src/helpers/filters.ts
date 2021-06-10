@@ -1,8 +1,12 @@
+import { RechangeWork } from "src/@types/rechange";
+import { ApiRechange } from "src/hooks/useRechanges";
+
 export enum FiltersTypes {
   periods = "Filtrar por periodo",
   client = "Filtrar por cliente",
   employee = "Filtrar por empleado",
   machine = "Filtrar por maquinaria",
+  vehicle = "Filtrar por vehículos",
 }
 
 export function formatArrayDate(date: string) {
@@ -63,9 +67,28 @@ export function showNA(value?: string) {
   return value ? value : "N/A";
 }
 
-export function calculatePrice(hours?: string, hourly?: string) {
+export function calculatePrice(
+  hours?: string,
+  hourly?: string,
+  rechanges: RechangeWork[] = [],
+  apiRechanges: ApiRechange[] = []
+) {
+  let rechangesPrice = 0;
+
+  if (rechanges.length > 0) {
+    rechanges.forEach((rechange) => {
+      apiRechanges.forEach((apiRechange) => {
+        if (rechange.mechanic_rechange_title === apiRechange.rechange_title) {
+          rechangesPrice +=
+            parseInt(rechange.mechanic_rechange_number) *
+            parseInt(apiRechange.rechange_price);
+        }
+      });
+    });
+  }
+
   return hours && hourly
-    ? parseInt(hours) * parseInt(hourly) + " €"
+    ? rechangesPrice + parseInt(hours) * parseInt(hourly) + " €"
     : "No se puede calcular";
 }
 

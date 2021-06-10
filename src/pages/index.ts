@@ -10,8 +10,8 @@ export * from "./CreateProject";
 export { default as CreateMachine } from "./CreateMachine";
 export * from "./CreateMachine";
 
-export { default as Home } from "./Home";
-export * from "./Home";
+export { default as CreateRechange } from "./CreateRechange";
+export * from "./CreateRechange";
 
 export { default as Login } from "./Login";
 export * from "./Login";
@@ -33,3 +33,6 @@ export * from "./FiltersMachine";
 
 export { default as CreateVehicle } from "./CreateVehicle";
 export * from "./CreateVehicle";
+
+export { default as FiltersVehicle } from "./FiltersVehicle";
+export * from "./FiltersVehicle";

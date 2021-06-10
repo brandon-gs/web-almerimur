@@ -1,4 +1,4 @@
-import React, { LegacyRef, useEffect, useState } from "react";
+import { LegacyRef, useEffect, useState } from "react";
 import {
   DownloadExcel,
   Input,
@@ -11,19 +11,19 @@ import Alert, { StateAlert } from "src/components/Alert/Alert";
 import useWorks from "src/hooks/useWorks";
 import "../Filters/Filters.css";
 import { FiltersTypes, saveValueOnSessionStorage } from "src/helpers/filters";
-import useClients from "src/hooks/useClients";
 import TableRow from "src/components/TableRow";
 import usePrintDiv from "src/hooks/usePrintDiv";
-import useRechanges from "src/hooks/useRechanges";
+import useVehicles from "src/hooks/useVehicles";
 import { OrderCreation } from "src/@types/order";
+import useRechanges from "src/hooks/useRechanges";
 
-const FILTERS = [FiltersTypes.client];
+const FILTERS = [FiltersTypes.vehicle];
 
-const ALL_CLIENTS = "Todos los clientes";
+const ALL_EMPLOYEES = "Todos los vehículos";
 
-export default function FiltersClient() {
+export default function FiltersVehicles() {
   const [isLoading, setIsLoading] = useState(true);
-  const [date, setDate] = useState("Todos los clientes");
+  const [date, setDate] = useState(ALL_EMPLOYEES);
   const [order, setOrder] = useState("");
   const [filter, setFilter] = useState<string>(FILTERS[0]);
   const [serverError, setServerError] = useState<StateAlert>({
@@ -36,18 +36,15 @@ export default function FiltersClient() {
 
   // Hooks
   const { tableRef, print } = usePrintDiv();
-  const { clientsName } = useClients(changeLoading);
   const {
     works,
-    filterByClientName,
+    filterByVehicle,
     searchWorksByKeyword,
     sortByCreated,
     sortByDateOption,
   } = useWorks(changeLoading);
+  const { vehiclesName } = useVehicles(changeLoading);
   const { rechanges } = useRechanges(changeLoading);
-
-  // Const
-  const CLIENTS = [ALL_CLIENTS, ...clientsName];
 
   // Change loading
   useEffect(() => {
@@ -56,7 +53,7 @@ export default function FiltersClient() {
 
   // on changes
   const onChangeDate = async (value: string) => {
-    await filterByClientName(value);
+    await filterByVehicle(value);
     setDate(value);
   };
   const onChangeOrder = async (value: string) => {
@@ -96,8 +93,8 @@ export default function FiltersClient() {
             <SelectInput
               onChange={onChangeDate}
               value={date}
-              items={CLIENTS}
-              placeholder="Periodo"
+              items={["Todos los vehículos", ...vehiclesName]}
+              placeholder="Tipo de maquina"
               className="input_select"
             />
             <SelectInput
@@ -106,8 +103,8 @@ export default function FiltersClient() {
               items={[
                 OrderCreation.firstPeriod,
                 OrderCreation.lastPeriod,
-                OrderCreation.lastCreatedAt,
                 OrderCreation.firstCreatedAt,
+                OrderCreation.lastCreatedAt,
               ]}
               placeholder="Ordenar"
               className="input_select"

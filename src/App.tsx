@@ -4,7 +4,7 @@ import {
   CreateMachine,
   CreateProject,
   CreateUser,
-  Home,
+  CreateRechange,
   Login,
   Filters,
   FiltersPeriod,
@@ -12,6 +12,7 @@ import {
   FiltersEmployee,
   FiltersMachine,
   CreateVehicle,
+  FiltersVehicle,
 } from "./pages";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
@@ -19,7 +20,7 @@ function App() {
   const routes = [
     {
       path: "/",
-      component: Home,
+      component: Filters,
     },
     {
       path: "/login",
@@ -46,6 +47,10 @@ function App() {
       component: CreateVehicle,
     },
     {
+      path: "/create/rechange",
+      component: CreateRechange,
+    },
+    {
       path: "/filters",
       component: Filters,
     },
@@ -64,6 +69,10 @@ function App() {
     {
       path: "/filters/machine",
       component: FiltersMachine,
+    },
+    {
+      path: "/filters/vehicle",
+      component: FiltersVehicle,
     },
   ];
 

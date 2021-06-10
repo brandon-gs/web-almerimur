@@ -8,6 +8,7 @@ import "./ListItem.css";
 
 export interface Item {
   name: string;
+  price?: string;
   id: string;
 }
 
@@ -20,6 +21,7 @@ export interface ListItemProps {
 export default function ListItem({ item, onUpdate, onDelete }: ListItemProps) {
   const [currentItem, setCurrentItem] = useState(item);
   const [value, setValue] = useState(item.name);
+  const [price, setPrice] = useState(item.price ? item.price : "");
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
@@ -30,6 +32,10 @@ export default function ListItem({ item, onUpdate, onDelete }: ListItemProps) {
     setValue(item.name);
   }, [item.name]);
 
+  useEffect(() => {
+    setPrice(item.price ? item.price : "");
+  }, [item.price]);
+
   const enableEditMode = () => setEditMode(true);
   const disableEditMode = () => setEditMode(false);
 
@@ -38,7 +44,7 @@ export default function ListItem({ item, onUpdate, onDelete }: ListItemProps) {
   };
 
   const handleClick = async () => {
-    const newItem: Item = { id: item.id, name: value };
+    const newItem: Item = { id: item.id, name: value, price };
     await onUpdate(newItem);
     disableEditMode();
   };
@@ -52,8 +58,16 @@ export default function ListItem({ item, onUpdate, onDelete }: ListItemProps) {
       {!editMode && (
         <>
           <p>{currentItem.name}</p>
-          <EditIcon onClick={enableEditMode} />
-          <DeleteIcon fill="#1A8D8C" onClick={handleDelete} />
+          {currentItem.price && <p>{currentItem.price} €</p>}
+          <EditIcon
+            onClick={enableEditMode}
+            style={{ minWidth: 25.6, minHeight: 40 }}
+          />
+          <DeleteIcon
+            fill="#1A8D8C"
+            onClick={handleDelete}
+            style={{ minWidth: 25.6, minHeight: 40 }}
+          />
         </>
       )}
       {editMode && (
@@ -65,7 +79,20 @@ export default function ListItem({ item, onUpdate, onDelete }: ListItemProps) {
             placeholder="Nombre"
             onChange={handleChange}
           />
-          <button className="button" onClick={handleClick}>
+          {item.price && (
+            <Input
+              value={price}
+              type="text"
+              name="price"
+              placeholder="Precio"
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          )}
+          <button
+            className="button"
+            onClick={handleClick}
+            style={{ minWidth: 88 }}
+          >
             Guardar
           </button>
         </>
