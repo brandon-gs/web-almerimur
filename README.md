@@ -1,3 +1,9 @@
+# web-almerimur
+
+Create an .env file like below
+
+`EXPO_API_URL=http://BACKEND_URL/api/v1`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
