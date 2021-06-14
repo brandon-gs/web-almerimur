@@ -78,7 +78,7 @@ export function calculatePrice(
   if (rechanges.length > 0) {
     rechanges.forEach((rechange) => {
       apiRechanges.forEach((apiRechange) => {
-        if (rechange.mechanic_rechange_title === apiRechange.rechange_title) {
+        if (rechange.rechange_id === apiRechange.rechange_id) {
           rechangesPrice +=
             parseInt(rechange.mechanic_rechange_number) *
             parseInt(apiRechange.rechange_price);

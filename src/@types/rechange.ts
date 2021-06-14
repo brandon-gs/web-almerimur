@@ -5,6 +5,7 @@ export interface RechangeValues {
 }
 
 export interface RechangeWork {
+  rechange_id?: string;
   mechanic_rechange_id: string;
   mechanic_rechange_title: string;
   mechanic_rechange_work_id: string;
