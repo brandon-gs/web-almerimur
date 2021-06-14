@@ -235,6 +235,7 @@ function CreateProject() {
           </article>
           {rechanges && (
             <List
+              emptyMessage="No hay recambios dados de alta"
               title="Lista de recambios"
               items={rechanges}
               onUpdate={updateRechange as any}

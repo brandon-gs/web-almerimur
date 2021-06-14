@@ -216,6 +216,7 @@ function CreateClient() {
             </button>
           </article>
           <List
+            emptyMessage="No hay clientes dados de alta"
             title="Lista de clientes"
             items={clients}
             onUpdate={updateClient}

@@ -216,6 +216,7 @@ function CreateMachine() {
           </article>
           {machines && (
             <List
+              emptyMessage="No hay maquinas dadas de alta"
               title="Lista de maquinas"
               items={machines}
               onUpdate={updateMachine}

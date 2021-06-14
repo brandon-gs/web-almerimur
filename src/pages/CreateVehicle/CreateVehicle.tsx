@@ -208,6 +208,7 @@ function CreateVehicle() {
           </article>
           {vehicles && (
             <List
+              emptyMessage="No hay vehículos dados de alta"
               title="Lista de vehículos"
               items={vehicles}
               onUpdate={updateVehicle}

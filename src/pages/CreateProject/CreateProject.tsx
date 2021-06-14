@@ -136,14 +136,14 @@ function CreateProject() {
         setValues(defaultValues);
         setErrors({});
         setServerError({
-          message: "Cliente dado de alta.",
+          message: "Proyecto dado de alta.",
           type: "success",
           show: true,
         });
         await getApiProjects();
       } catch (error) {
         setServerError({
-          message: "Error al dar de alta al cliente, intente más tarde.",
+          message: "Error al dar de alta un proyecto, intente más tarde.",
           type: "danger",
           show: true,
         });
@@ -215,6 +215,7 @@ function CreateProject() {
           </article>
           {projects && (
             <List
+              emptyMessage="No hay proyectos dados de alta"
               title="Lista de proyectos"
               items={projects}
               onUpdate={updateProject}

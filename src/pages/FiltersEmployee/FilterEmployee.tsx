@@ -142,19 +142,23 @@ export default function FiltersEmployee() {
             <TableRow>Tipo de usuario</TableRow>
             <TableRow>Nombre</TableRow>
             <TableRow>Periodo</TableRow>
-            <TableRow>Maquinaria</TableRow>
+            <TableRow>Maquinaria/Vehículo</TableRow>
             <TableRow>Proyecto</TableRow>
             <TableRow>Cliente</TableRow>
             <TableRow width={100}>Precio</TableRow>
           </div>
           <div className="border"></div>
-          {works.map((work, index) => (
-            <TableRowWork
-              key={`work-${index}`}
-              {...work}
-              rechanges={rechanges}
-            />
-          ))}
+          {works.length > 0 ? (
+            works.map((work, index) => (
+              <TableRowWork
+                key={`work-${index}`}
+                {...work}
+                rechanges={rechanges}
+              />
+            ))
+          ) : (
+            <h1 className="mt-4 list_title">No se han registrado trabajos</h1>
+          )}
         </div>
         <div className="button_container" style={{ width: "100%" }}>
           <button type="button" onClick={print} className="button mr-7">

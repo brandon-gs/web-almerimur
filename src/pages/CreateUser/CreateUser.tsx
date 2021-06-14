@@ -75,7 +75,10 @@ function CreateUser() {
     // Do api call to create user
     if (!hasErrors && fileInputRef.current?.files) {
       try {
-        const inputFile = fileInputRef.current.files[0];
+        const inputFile =
+          values.image !== defaultValues.image
+            ? fileInputRef.current.files[0]
+            : defaultValues.image;
         const response = await createUser(values, inputFile);
         if (response.error && response.message) {
           setServerError({
