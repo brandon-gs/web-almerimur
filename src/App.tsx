@@ -11,8 +11,6 @@ import {
   FiltersClient,
   FiltersEmployee,
   FiltersMachine,
-  CreateVehicle,
-  FiltersVehicle,
 } from "./pages";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
@@ -43,10 +41,6 @@ function App() {
       component: CreateMachine,
     },
     {
-      path: "/create/vehicle",
-      component: CreateVehicle,
-    },
-    {
       path: "/create/rechange",
       component: CreateRechange,
     },
@@ -69,10 +63,6 @@ function App() {
     {
       path: "/filters/machine",
       component: FiltersMachine,
-    },
-    {
-      path: "/filters/vehicle",
-      component: FiltersVehicle,
     },
   ];
 

@@ -30,9 +30,3 @@ export * from "./FiltersEmployee";
 
 export { default as FiltersMachine } from "./FiltersMachine";
 export * from "./FiltersMachine";
-
-export { default as CreateVehicle } from "./CreateVehicle";
-export * from "./CreateVehicle";
-
-export { default as FiltersVehicle } from "./FiltersVehicle";
-export * from "./FiltersVehicle";

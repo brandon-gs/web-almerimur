@@ -49,11 +49,6 @@ function Sidebar() {
             Maquinaria
           </p>
         </Link>
-        <Link to="/create/vehicle" className="sidebar_link">
-          <p className={`sidebar_text--${getTextClass("/create/vehicle")}`}>
-            Vehículo
-          </p>
-        </Link>
         <Link to="/create/rechange" className="sidebar_link">
           <p className={`sidebar_text--${getTextClass("/create/rechange")}`}>
             Recambio
@@ -83,13 +78,6 @@ function Sidebar() {
         <Link to="/filters/machine" className="sidebar_link">
           <p className={`sidebar_text--${getTextClass("/filters/machine")}`}>
             Por maquinaria
-          </p>
-        </Link>
-        <Link to="/filters/vehicle" className="sidebar_link">
-          <p
-            className={`mb-6 sidebar_text--${getTextClass("/filters/vehicle")}`}
-          >
-            Por vehículo
           </p>
         </Link>
         <div className="sidebar_exit mb-4" onClick={() => logout()}>

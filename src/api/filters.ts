@@ -24,7 +24,6 @@ export const getAllWorks = async () => {
         authorization: localStorage.getItem("token"),
       },
     });
-    console.log(res);
     return { error: false, data: res.data };
   } catch (e) {
     return {
